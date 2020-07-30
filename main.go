@@ -22,6 +22,8 @@ var (
 	out        []string
 )
 
+const clearTerminal = "\033[2J"
+
 func createBoard() {
 	re := regexp.MustCompile(`[\d]`)
 	steps := []string{"O", "|", "/", "\\", "/", "\\"}
@@ -51,6 +53,7 @@ func sortWord() {
 
 func showBoard(idx int) {
 	if idx < len(board) {
+		print(clearTerminal)
 		fmt.Println(board[idx])
 	} else {
 		isLooser = true
@@ -73,7 +76,6 @@ func operations(ch chan int, opt string) {
 		chance--
 		posBoard++
 		wrongWord = wrongWord + opt
-		showBoard(posBoard)
 	} else {
 		for i, v := range selectWord {
 			if v == []rune(opt)[0] {
@@ -82,6 +84,7 @@ func operations(ch chan int, opt string) {
 		}
 	}
 	userWrite = userWrite + opt
+	showBoard(posBoard)
 	ch <- 1
 }
 
